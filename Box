@@ -1,0 +1,53 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+/**
+ *
+ * @author willi
+ */
+public class Box implements Packable{
+    private double capacity;
+    
+    private List<Packable>box;
+    
+    public Box(double capacity){
+        
+        this.capacity = capacity;
+        box = new ArrayList<>();
+    }
+    
+    public double getCapacity(){
+        return capacity;
+    }
+
+    //weight total all items
+   
+      public double weight() {
+        double total = 0.0D;
+        for (Packable p : this.getBox()) {
+            total = Double.sum(total, p.weight());
+        }
+    
+    return total;
+  }
+    
+    public List<Packable> getBox() {
+        return Collections.unmodifiableList(this.box);
+    }
+    //alex-golub
+    public void add(Packable p){
+        // Get the required box weight to pack this packable
+    double newWeight = Double.sum(this.weight(), p.weight());
+    
+    // Check if this box can fit the new Pacable object
+    if (Double.compare(newWeight, this.getCapacity()) <= 0) {
+      this.box.add(p);
+    }
+  }
+    @Override
+    public String toString() {
+        return String.format("Box: %d items, total weight %.1f kg", 
+                this.getBox().size(), this.weight());
+    
+    }
+}
